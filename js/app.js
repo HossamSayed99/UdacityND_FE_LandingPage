@@ -33,6 +33,7 @@ const sectionLists = document.querySelectorAll('section');
 
 //  A helper function to determine if an element is in the view port; i.e in the visible part of the screen
 // An element is visible on the scrren if its boundaries are within the borders of the screen
+// reference: https://gomakethings.com/how-to-test-if-an-element-is-in-the-viewport-with-vanilla-javascript/ 
 function isInViewPort(element)
 {
     let bounding = element.getBoundingClientRect();
