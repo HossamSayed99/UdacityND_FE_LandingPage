@@ -22,7 +22,8 @@
 
 
 const sectionLists = document.querySelectorAll('section');
-
+// A variable to hold the last active link to make the color change smooth
+let lastActiveLink = null;
 
 
 /**
@@ -56,19 +57,6 @@ function isInViewPort(element)
 function buildNav(){
     const navBar = document.querySelector('nav');
     const docFragement = document.createDocumentFragment();
-    // First Method: used an ordinary for loop
-/**
-    * for(let i = 0 ; i < sectionLists.length; i++)
-    {
-        let listItem = document.createElement('li');
-        let linkToCurrentSection = document.createElement('a')
-        linkToCurrentSection.textContent = sectionLists[i].getAttribute('data-nav');
-        linkToCurrentSection.href = '#' + sectionLists[i].id;
-        linkToCurrentSection.classList.add('menu__link');
-        listItem.appendChild(linkToCurrentSection);
-        docFragement.appendChild(listItem);
-    }
-*/
     // Second Method: used a for of loop, I think this is way cleaner
     for (let section of sectionLists)
     {
@@ -80,6 +68,8 @@ function buildNav(){
         linkToCurrentSection.textContent = section.getAttribute('data-nav');
         // Setting the link for the anchor element
         linkToCurrentSection.href = '#' + section.id;
+        // Adding an id
+        linkToCurrentSection.id = 'linkTo' + section.id;
         // Adding menu__link class 
         linkToCurrentSection.classList.add('menu__link');
         // Appending the anchor as a child to the list element
@@ -99,11 +89,21 @@ function setActiveSection()
         for (let section of sectionLists)
         {
             section.classList.remove('your-active-class');
+            let navBarLink = document.getElementById('linkTo' + section.id);
             if(isInViewPort(section))
+            {
                 section.classList.add('your-active-class');
-
+                // Change the class iff the current section is different than the old section
+                if(lastActiveLink == null || lastActiveLink != navBarLink )
+                {
+                    lastActiveLink = navBarLink;
+                    navBarLink.classList.add('active__section');
+                }
+            }
+            // Remove the class iff the current link is not the lastActiveLink
+            else if(lastActiveLink != null && navBarLink !=  lastActiveLink)
+                navBarLink.classList.remove('active__section');
         }
-
     });
 }
 
